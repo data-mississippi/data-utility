@@ -1,1 +1,0 @@
-* virtualenv and add the instructions to read me

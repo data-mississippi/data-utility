@@ -1,23 +1,45 @@
 # data-utility
-This contains a data entry CLI for MS statewide election results. It's for a very specific workflow and probably useless to other people, except as an example on how to do this. Originally, this was like a 20 line script but now I've probably spent too much time and made this more complicated than the first iteration...if you want to use that script, it's called `elections.py`. Your system requires Python 3.7.
+This contains a data entry CLI for MS statewide election results. It's for a very specific workflow and probably useless to other people, except as an example on how to do this.
 
-It's used with Tabula, which extracts the data from the PDF. Export a page of results from the PDF with Tabula, put those in two files (explained below), and then run the script. 
+Your system requires Python 3.7. Setup your virtual environment like this:
+```
+python3 -m venv env
+source env/bin/activate
+pip install -r requirements.txt
+```
 
-Here is how it works:
-  1) take the results from the PDF and create a file called `candidate_counts.csv`. Put each candidate's name + results on a newline in that file. Write the associated county names in a file called `counties.csv`.
+Then run the script, with the arguments (explained below):
+```
+cd writer
+python write_csv.py counties.csv candidate_votes.csv President '' Democrat
+```
+
+## Here is how it works:
+  This script is used with Tabula. 
+  1. Export a page of results from the PDF with Tabula, 
+  2. Take the results from the PDF and create a file called `candidate_votes.csv`. Put each candidate's name + results on a newline in that file. 
+  3. Write the associated county names on one line in a file called `counties.csv`. 
+  
+  **The order of votes in `candidate_votes.csv` must map to the list of `counties.csv`. If this mapping is wrong, then the output file will be wrong.**
 
 For instance:
 ```
-# candidate_counts.csv
+# candidate_votes.csv
 
-Bernie Sanders,24,16,37
+Elizabeth Warren,24,160,37,59
 ```
 
 ```
 # counties.csv
 
-Adams,Attalla,Amite
+Iuka,Lee,Pontotoc,Union
 ```
+
+This would mean Iuka = 24, Lee = 160, Pontotoc = 37, and Union = 59. If your output is wrong, then it's probably mapped incorrectly.
+
+## CLI Arguments
+There are demo files which already exist in the repo. In your virtual environment, execute the script:
+`python write_csv.py counties.csv candidate_votes.csv President '' Democrat`
 
 The CLI takes five arguments: 
   1) the path of your candidate_counts.csv
@@ -26,9 +48,11 @@ The CLI takes five arguments:
   4) district (empty string if none)
   5) party
 
-There are demo files which already exist in the repo. In your terminal execute the script:
-`python3 write_csv.py counties.csv candidate_counts.csv President '' Democrat`
+## etc
+The script pauses periodically, so that you can check your work against the certified election results. Once you've verified that, the script continues. If there's something wrong with the output, then it's most likely that the input csv file mapping is mismatched.
 
-Since this is data entry, I want to be sure that I'm inputting the correct values. To do that, the script pauses after each candidate's results are parsed, so that you can check your work against the certified election results. Once you've verified that, the script continues. If there's something wrong with the output, then it's most likely that the input csv files are mismatched.
+When the script is done, it writes the results into a new csv file. The results are grouped by candidates and within each grouping, sorted alphabetically by county. This file will be rewritten every time the script runs, so before you run the script again, rename the `sorted_results.csv` file or save the results elsewhere.
 
-When the script is done, it writes the results into a new csv file. The results are grouped by candidates and within each grouping, sorted alphabetically by county. This file will be rewritten every time the script runs, so save the results elsewhere.
+Currently, the preprocessed results are dumped in the `/tmp` folder. You might want to clear that out.
+
+Originally, this was like a 20 line script but now I've probably spent too much time and made this more complicated than the first iteration...if you want to use that script, it's called `write_csv_basic.py`. 
