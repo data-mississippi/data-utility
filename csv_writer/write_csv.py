@@ -28,7 +28,7 @@ def parse_arguments():
   arg_map.update({
     'jurisdiction_list': get_jurisdiction_list(arg_map.get('jurisdiction_list_path')),
     'district': district,
-    'temp_file_name': f'tmp/results-{time.strftime("%Y%m%d-%H%M%S")}.csv',
+    'temp_file_name': f'tmp/tmp-{time.strftime("%Y%m%d-%H%M%S")}.csv',
     'results_file_name': f'results-{time.strftime("%Y%m%d-%H%M%S")}.csv',
     'csv_header': [arg_map.get('jurisdiction_level').lower(), 'office', 'district', 'party', 'candidate', 'votes']
   })
@@ -104,8 +104,10 @@ def write_candidate_csv_lines(row, arg_map):
     key_input = input('\nVerify the results are correct and press enter to continue. Press ctrl + c to quit.\n')
 
     # finally, write the rows to the csv file
-    with open(temp_file_name, 'a') as f:
-      f.write(csv_string)
+    if not os.path.exists('tmp'):
+      os.makedirs('tmp')
+      with open(temp_file_name, 'a') as f:
+        f.write(csv_string)
   else:
     print('Invalid inputs. There is likely a mismatch in how many jurisdictions are input and how many vote tallies were input for a candidate.')
     sys.exit()
