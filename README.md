@@ -35,7 +35,7 @@ Elizabeth Warren,24,160,37,59
 Itawamba,Lee,Pontotoc,Union
 ```
 
-This would mean Itawamba = 24, Lee = 160, Pontotoc = 37, and Union = 59. If your output is wrong, then it's probably mapped incorrectly.
+This would mean Itawamba = 24, Lee = 160, Pontotoc = 37, and Union = 59. If your output is wrong, then this mapping is wrong.
 
 ## CLI Arguments
 There are demo files which already exist in the repo. In your virtual environment, execute the script:
