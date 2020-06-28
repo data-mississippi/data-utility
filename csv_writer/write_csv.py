@@ -3,6 +3,18 @@ import os
 from csv import reader
 import pandas as pd
 import time
+          
+
+def main():
+  arg_map = parse_arguments()
+
+  # build the csv lines and store it in a temp file 
+  # (need to change that to memory instead of disk?)
+  build_csv(arg_map)
+
+  # final csv output
+  sort_and_output_final_csv(arg_map)
+
 
 def parse_arguments():
   arg_map = {}
@@ -17,7 +29,7 @@ def parse_arguments():
     })
     
   except IndexError:
-    print('Not enough arguments.')
+    print('Not enough arguments. See README.md for list of required arguments.')
     sys.exit()
 
   try:
@@ -34,16 +46,6 @@ def parse_arguments():
   })
 
   return arg_map
-          
-
-def main():
-  arg_map = parse_arguments()
-
-  # build the csv lines and store it in a temp file
-  build_csv(arg_map)
-
-  # final csv output
-  sort_and_output_final_csv(arg_map)
 
 
 def get_jurisdiction_list(path):
@@ -62,7 +64,7 @@ def get_jurisdiction_list(path):
 
 def build_csv(arg_map):
   """
-    This builds the csv per candidate.
+    Builds csv lines per candidate.
     
     It opens the candidate_votes.csv file and loops through each line.
     Each row is a candidate's results and there can be multiple
@@ -79,7 +81,7 @@ def write_candidate_csv_lines(row, arg_map):
   """
     Writes a candidate's csv lines to a temp file.
 
-    The program pauses once the candidate's lines have been compiled,
+    The program pauses once the candidate's lines have compiled,
     so the user can verify the output. Then it writes those lines to a temp file.
   """
   candidate = row.pop(0)
@@ -101,13 +103,15 @@ def write_candidate_csv_lines(row, arg_map):
       csv_string += line
 
     # pause execution to check work
-    key_input = input('\nVerify the results are correct and press enter to continue. Press ctrl + c to quit.\n')
+    key_input = input('\nVerify the results are correct and press enter to continue. Press ctrl + c to reject.\n')
 
     # finally, write the rows to the csv file
     if not os.path.exists('tmp'):
       os.makedirs('tmp')
-      with open(temp_file_name, 'a') as f:
-        f.write(csv_string)
+      
+    with open(temp_file_name, 'a') as f:
+      f.write(csv_string)
+
   else:
     print('Invalid inputs. There is likely a mismatch in how many jurisdictions are input and how many vote tallies were input for a candidate.')
     sys.exit()
@@ -129,6 +133,7 @@ def sort_and_output_final_csv(arg_map):
 
   # delete tmp file
   os.remove(tmp_file)
+  os.rmdir('tmp')
 
 
 if __name__ == '__main__':
