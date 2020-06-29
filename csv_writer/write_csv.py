@@ -48,7 +48,7 @@ def parse_arguments():
 
 
 def get_jurisdiction_list(path):
-  """Returns list of jurisdictions from the jurisdiction.csv"""
+  """Returns list of jurisdictions from jurisdiction.csv"""
   jurisdiction = []
 
   with open(path, 'r') as f:
@@ -56,7 +56,8 @@ def get_jurisdiction_list(path):
     
     # there should only be one row
     jurisdictions = next(csv_reader)
-    print(f'Processing results for these jurisdictions: {jurisdiction}')
+    print('\n')
+    print(f'Processing results for these jurisdictions: {jurisdictions}')
 
   return jurisdictions
 
@@ -111,6 +112,10 @@ def write_candidate_csv_lines(row, arg_map):
 
   else:
     print('Invalid inputs. There is likely a mismatch in how many jurisdictions are input and how many vote tallies were input for a candidate.')
+    print('You put in this many jurisdictions:')
+    print(len(jurisdiction_list))
+    print('You put in this many vote counts:')
+    print(len(row))
     sys.exit()
 
 

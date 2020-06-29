@@ -52,7 +52,7 @@ The CLI takes 6 arguments:
   6) district (optional)
 
 ## etc
-The script pauses periodically, so that you can check your work against the certified election results. Once you've verified that, the script continues. If there's something wrong with the output, then it's most likely that the input csv files have mismatched mapping.
+The script pauses periodically, so that you can check your work against the election results. Once you've verified that, the script continues. If there's something wrong with the output, then it's most likely that the input csv files have mismatched mapping.
 
 When the script is done, it writes the results into a new csv file called `results-{timestamp}.csv`. The results are grouped by candidates and sorted alphabetically by county. When I do this, I go through the election results PDF and input the results page by page. That means I execute the script multiple times for an election. If you do it like that, then you'll need to combine all of these output files at the end. There is a helper script that does that called `combine_csv_output.py`. It creates a file called `final-sorted-output.csv`.
 
