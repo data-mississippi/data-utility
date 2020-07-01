@@ -9,10 +9,18 @@ source env/bin/activate
 pip install -r requirements.txt
 ```
 
-Then run the script, with the arguments (explained below):
+There are demo files which already exist in the repo. In your virtual environment, execute the script:
 ```
-python write_csv.py source/jurisdictions.csv source/candidate_votes.csv Senate Democrat County 1
+python write_csv.py source/jurisdictions.csv source/candidate_votes.csv President Democrat County
 ```
+
+The CLI takes 6 arguments: 
+  1) the path of your `candidate_votes.csv` (required)
+  2) the path of your `jurisdictions.csv` (required)
+  3) office seat (required)
+  4) party (required)
+  5) jurisdiction (required)
+  6) district (optional)
 
 ## Here is how it works:
   This script is used with Tabula. 
@@ -36,20 +44,6 @@ Itawamba,Lee,Pontotoc,Union
 ```
 
 This would mean Itawamba = 24, Lee = 160, Pontotoc = 37, and Union = 59. If your output is wrong, then this mapping is wrong.
-
-## CLI Arguments
-There are demo files which already exist in the repo. In your virtual environment, execute the script:
-```
-python write_csv.py source/jurisdictions.csv source/candidate_votes.csv President Democrat County
-```
-
-The CLI takes 6 arguments: 
-  1) the path of your `candidate_votes.csv` (required)
-  2) the path of your `jurisdictions.csv` (required)
-  3) office seat (required)
-  4) party (required)
-  5) jurisdiction (required)
-  6) district (optional)
 
 ## etc
 The script pauses periodically, so that you can check your work against the election results. Once you've verified that, the script continues. If there's something wrong with the output, then it's most likely that the input csv files have mismatched mapping.
